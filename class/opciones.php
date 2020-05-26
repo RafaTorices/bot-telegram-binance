@@ -24,8 +24,10 @@ class Opciones
 
     function enviarOpciones($chatId, $mensaje)
     {
-
-        $opciones = ['/PRECIOS', '/SOPORTE'];
+        //Ejemplo de array
+        //$opciones = mysqli_fetch_all($sql);
+        //$opciones = [['1', '2', '3', '4'], ['1', '2']];
+        $opciones = [['/PRECIOS', '/AYUDA']];
         //Defino la botonera de opciones y se lo envio al usuario
         $keyboard = array(
             //Opciones almacenadas en el array multidimensional

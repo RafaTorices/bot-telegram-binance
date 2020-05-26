@@ -17,6 +17,10 @@ class AppService
     public function __construct()
     {
         //Instanciamos la clase de Respuesta
+        $respuesta = new Respuesta();
+        $this->respuesta = $respuesta;
+        $mensaje = new Mensaje();
+        $this->mensaje = $mensaje;
         $appConfig = new AppConfig();
         $this->token = $appConfig::TOKEN_APP;
         $this->tituloApp = $appConfig::TITULO_APP;
@@ -30,7 +34,6 @@ class AppService
         $this->usuario = $usuario;
         $servicio = new Servicio();
         $this->servicio = $servicio;
-
 
         if ($this->checkToken()) {
             //Recibimos el mensaje
@@ -48,21 +51,21 @@ class AppService
             $name = $firstName . " " . $lastName;
 
             //Guardamos el mensaje en la BD
-            //$this->mensaje->guardarMensaje($chatId, $mensaje, $name);
+            $this->mensaje->guardarMensaje($chatId, $mensaje, $name);
 
             //Comprobamos si el servicio esta activo para enviarle respuesta
-            // $estado = $this->servicio->comprobarServicio();
-            // if ($estado == 0 && $chatId != $this->chatIdSoporteApp) {
-            //     if ($this->usuario->comprobarUsuario($chatId) == 0) {
-            //         $this->usuario->guardarUsuario($chatId, $name);
-            //         $this->servicio->fueraServicio($chatId, $mensaje);
-            //     } else {
-            //         $this->servicio->fueraServicio($chatId, $mensaje);
-            //     }
-            // } else {
-            //     //Le respondemos dependiendo de su mensaje
-            $this->respuesta->enviarRespuesta($chatId, $mensaje, $name);
-            // }
+            $estado = $this->servicio->comprobarServicio();
+            if ($estado == 0 && $chatId != $this->chatIdSoporteApp) {
+                if ($this->usuario->comprobarUsuario($chatId) == 0) {
+                    $this->usuario->guardarUsuario($chatId, $name);
+                    $this->servicio->fueraServicio($chatId, $mensaje);
+                } else {
+                    $this->servicio->fueraServicio($chatId, $mensaje);
+                }
+            } else {
+                //Le respondemos dependiendo de su mensaje
+                $this->respuesta->enviarRespuesta($chatId, $mensaje, $name);
+            }
         }
     }
 
@@ -78,8 +81,8 @@ class AppService
         $messageTelegram = file_get_contents("php://input");
         $request = json_decode($messageTelegram);
         //Guardamos el JSON obtenido del mensaje en un fichero json
-        $fichero = fopen("mensaje.json", "w+");
-        fwrite($fichero, $messageTelegram);
+        // $fichero = fopen("mensaje.json", "w+");
+        // fwrite($fichero, $messageTelegram);
         return $request;
     }
 }

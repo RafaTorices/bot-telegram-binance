@@ -12,6 +12,7 @@ class Respuesta
     private $mensaje;
     private $servicio;
     private $emailApp;
+    private $binance;
 
     //Inicializamos el sistema y obtenemos todos los mensajes que entren al servicio
     public function __construct()
@@ -34,6 +35,8 @@ class Respuesta
         $this->mensaje = $mensaje;
         $servicio = new Servicio();
         $this->servicio = $servicio;
+        $binance = new Binance();
+        $this->binance = $binance;
     }
 
     //Método que enviará la respuesta dependiendo del mensaje obtenido
@@ -107,6 +110,11 @@ class Respuesta
             case "/ayuda":
                 //Enviamos mensaje de ayuda
                 $mensaje = $this->tituloApp . "Puede contactar con nuestro Soporte Técnico en: " . $this->emailApp;
+                $this->apiTelegram->enviarMensaje($chatId, $mensaje);
+                break;
+
+            case "/precios":
+                $mensaje = $this->binance->enviarPrecios();
                 $this->apiTelegram->enviarMensaje($chatId, $mensaje);
                 break;
 

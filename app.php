@@ -10,6 +10,8 @@ include_once "class/opciones.php";
 include_once "class/start.php";
 include_once "class/usuarios.php";
 include_once "class/servicio.php";
+include_once "class/binance.php";
+include_once 'vendor/autoload.php';
 
 //Ejecutamos la aplicacion llamando a la clase principal
 new AppService();

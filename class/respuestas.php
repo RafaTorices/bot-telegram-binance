@@ -11,6 +11,7 @@ class Respuesta
     private $tituloApp;
     private $mensaje;
     private $servicio;
+    private $emailApp;
 
     //Inicializamos el sistema y obtenemos todos los mensajes que entren al servicio
     public function __construct()
@@ -22,6 +23,7 @@ class Respuesta
         $this->appConfig = $appConfig;
         $this->chatIdSoporteApp = $appConfig::CHAT_ID_SOPORTE_APP;
         $this->tituloApp = $appConfig::TITULO_APP;
+        $this->emailApp = $appConfig::EMAIL_SOPORTE_APP;
         $opciones = new Opciones();
         $this->opciones = $opciones;
         $start = new Start();
@@ -102,6 +104,11 @@ class Respuesta
                     return $this->apiTelegram->enviarMensajeNoEntiendo($chatId, $mensaje, $name);
                     break;
                 }
+            case "/ayuda":
+                //Enviamos mensaje de ayuda
+                $mensaje = $this->tituloApp . "Puede contactar con nuestro Soporte Técnico en: " . $this->emailApp;
+                $this->apiTelegram->enviarMensaje($chatId, $mensaje);
+                break;
 
                 //Por defecto sino se envia esto...
             default:

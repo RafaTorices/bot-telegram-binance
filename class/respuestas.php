@@ -109,14 +109,24 @@ class Respuesta
                 }
             case "/ayuda":
                 //Enviamos mensaje de ayuda
-                $mensaje = $this->tituloApp . "Puede contactar con nuestro Soporte Técnico en: " . $this->emailApp;
+                $mensaje = $this->tituloApp . "Versión 1.0 - Puede contactar con nuestro Soporte Técnico en: " . $this->emailApp;
                 $this->apiTelegram->enviarMensaje($chatId, $mensaje);
                 break;
 
             case "/precios":
-                $mensaje = $this->binance->enviarPrecios();
+                $mensaje = $this->tituloApp . "Para obtener los últimos precios envíe mensaje con el texto: PRECIO-SIMBOLO. Por ejemplo para obtener el último precio del símbolo NEOBTC enviar PRECIO-NEOBTC";
                 $this->apiTelegram->enviarMensaje($chatId, $mensaje);
                 break;
+
+            case $mensaje:
+                if (strpos($mensaje, 'precio-') !== false) {
+                    $simbolo = str_replace('precio-', '', $mensaje);
+                    if ($this->binance->enviarPrecios($simbolo) != '') {
+                        $mensaje = $this->binance->enviarPrecios($simbolo);
+                        $this->apiTelegram->enviarMensaje($chatId, $mensaje);
+                        break;
+                    }
+                }
 
                 //Por defecto sino se envia esto...
             default:

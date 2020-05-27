@@ -6,6 +6,9 @@ class Binance
     private $precios;
     private $apiKey;
     private $secretKey;
+    private $apiTelegram;
+    private $config;
+    private $tituloApp;
 
     public function __construct()
     {
@@ -14,24 +17,21 @@ class Binance
         $this->secretKey = $bitcoin::SECRETKEY;
         $api = new Binance\API($this->apiKey, $this->secretKey);
         $this->api = $api;
+        $apiTelegram = new ApiTelegram();
+        $this->apiTelegram = $apiTelegram;
+        $config = new AppConfig();
+        $this->config = $config;
+        $this->tituloApp = $this->config::TITULO_APP;
     }
 
-    // public function enviarPreciosIndividual()
-    // {
-    //     //Método para obtener los prices
-    //     $this->precios = $this->api->prices();
-    //     $simbolo = "BNBBTC";
-    //     $this->precio = $this->api->price($simbolo);
-    //     return $this->precio;
-    // }
-
-    public function enviarPrecios()
+    public function enviarPrecios($simbolo)
     {
         //Método para obtener los prices
-        //$this->precios = $this->api->prices();
-        //$simbolo = "BNBBTC";
-        $this->precio = $this->api->prices();
-        foreach ($this->precio as $precio) {
+        $simbolo = strtoupper($simbolo);
+        $this->precios = $this->api->prices();
+        $precio = $this->precios[$simbolo];
+        if ($precio != '') {
+            $precio = $this->tituloApp . "PRECIO ACTUAL DE <b>" . $simbolo . "</b> = " . $precio;
             return $precio;
         }
     }

@@ -22,7 +22,7 @@ class Start
     //Método para enviarla la bienvenida a un nuevo usuario
     public function enviarBienvenida($chatId, $name)
     {
-        $mensaje = "Hola <b>" . $name . "</b>, Bienvenido a nuestro sistema " . $this->tituloApp . " Use las opciones para moverse por la aplicación (/OPCIONES). Consulte /AYUDA para conocer mejor nuestro servicio, /SOPORTE para contactar con Soporte Técnico, /REGISTRO para registrarse en nuestro sistema.";
+        $mensaje = "Hola <b>" . $name . "</b>, Bienvenido a nuestro sistema " . $this->tituloApp . " Use las opciones para moverse por la aplicación (/OPCIONES). /AYUDA para contactar con Soporte Técnico.";
         return $this->apiTelegram->enviarMensaje($chatId, $mensaje);
     }
 }
